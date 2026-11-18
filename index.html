@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>QuantumBharat — Register</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* ── Reset & base ──────────────────────────────────────────── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg-deep:    #040D18;
+    --bg-card:    #0C1A2E;
+    --bg-input:   #111F36;
+    --accent:     #0066CC;
+    --accent-h:   #1A80E6;
+    --text:       #F0F4F8;
+    --text-muted: #8899AA;
+    --border:     #1E3050;
+    --success:    #22C55E;
+    --error:      #EF4444;
+    --radius:     14px;
+    --font:       'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+
+  html { height: 100%; }
+
+  body {
+    font-family: var(--font);
+    background: var(--bg-deep);
+    color: var(--text);
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 24px 16px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Starfield (subtle background dots) ───────────────────── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      radial-gradient(1.5px 1.5px at 10% 15%, rgba(255,255,255,0.12), transparent),
+      radial-gradient(1px 1px at 25% 45%, rgba(255,255,255,0.08), transparent),
+      radial-gradient(1.2px 1.2px at 50% 10%, rgba(255,255,255,0.10), transparent),
+      radial-gradient(1px 1px at 70% 60%, rgba(255,255,255,0.07), transparent),
+      radial-gradient(1.5px 1.5px at 85% 25%, rgba(255,255,255,0.09), transparent),
+      radial-gradient(1px 1px at 15% 80%, rgba(255,255,255,0.06), transparent),
+      radial-gradient(1.3px 1.3px at 40% 70%, rgba(255,255,255,0.08), transparent),
+      radial-gradient(1px 1px at 90% 85%, rgba(255,255,255,0.07), transparent),
+      radial-gradient(1.4px 1.4px at 60% 35%, rgba(255,255,255,0.10), transparent),
+      radial-gradient(1px 1px at 35% 90%, rgba(255,255,255,0.06), transparent);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ── Card ──────────────────────────────────────────────────── */
+  .card {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 420px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 40px 28px 36px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  }
+
+  /* ── Logo ──────────────────────────────────────────────────── */
+  .logo-wrap {
+    text-align: center;
+    margin-bottom: 8px;
+  }
+  .logo-wrap img {
+    width: 80px;
+    height: auto;
+    filter: drop-shadow(0 0 20px rgba(0,102,204,0.25));
+  }
+
+  /* ── Heading ───────────────────────────────────────────────── */
+  .heading {
+    text-align: center;
+    margin-bottom: 28px;
+  }
+  .heading h1 {
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+    margin-bottom: 6px;
+  }
+  .heading p {
+    font-size: 14px;
+    color: var(--text-muted);
+    font-weight: 400;
+  }
+
+  /* ── Form ──────────────────────────────────────────────────── */
+  .field {
+    margin-bottom: 18px;
+  }
+  .field label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+    letter-spacing: 0.2px;
+  }
+  .field label .req {
+    color: var(--error);
+    margin-left: 2px;
+  }
+  .field input {
+    width: 100%;
+    padding: 13px 16px;
+    background: var(--bg-input);
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    color: var(--text);
+    font-family: var(--font);
+    font-size: 16px;
+    font-weight: 400;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    -webkit-appearance: none;
+  }
+  .field input::placeholder {
+    color: rgba(136,153,170,0.5);
+  }
+  .field input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(0,102,204,0.15);
+  }
+  .field input.invalid {
+    border-color: var(--error);
+    box-shadow: 0 0 0 3px rgba(239,68,68,0.12);
+  }
+  .field .err-msg {
+    font-size: 12px;
+    color: var(--error);
+    margin-top: 5px;
+    display: none;
+  }
+  .field input.invalid + .err-msg {
+    display: block;
+  }
+
+  /* ── Button ────────────────────────────────────────────────── */
+  .btn {
+    width: 100%;
+    padding: 15px;
+    border: none;
+    border-radius: 12px;
+    background: var(--accent);
+    color: #fff;
+    font-family: var(--font);
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    margin-top: 6px;
+    position: relative;
+    overflow: hidden;
+  }
+  .btn:hover { background: var(--accent-h); }
+  .btn:active { transform: scale(0.98); }
+  .btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+  }
+  .btn .spinner {
+    display: none;
+    width: 20px;
+    height: 20px;
+    border: 2.5px solid rgba(255,255,255,0.3);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    margin: 0 auto;
+  }
+  .btn.loading .btn-text { visibility: hidden; }
+  .btn.loading .spinner { display: block; position: absolute; top: 50%; left: 50%; margin: -10px 0 0 -10px; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ── Global error banner ───────────────────────────────────── */
+  .banner {
+    padding: 12px 16px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: 18px;
+    display: none;
+    text-align: center;
+    line-height: 1.4;
+  }
+  .banner.error {
+    background: rgba(239,68,68,0.12);
+    color: #FCA5A5;
+    border: 1px solid rgba(239,68,68,0.2);
+  }
+  .banner.show { display: block; }
+
+  /* ── Success screen ────────────────────────────────────────── */
+  .success-screen {
+    display: none;
+    text-align: center;
+    padding: 20px 0;
+  }
+  .success-screen.visible { display: block; }
+
+  .checkmark-circle {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: rgba(34,197,94,0.12);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    animation: pop 0.4s cubic-bezier(0.34,1.56,0.64,1);
+  }
+  .checkmark-circle svg {
+    width: 36px;
+    height: 36px;
+    stroke: var(--success);
+    stroke-width: 3;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .checkmark-circle svg path {
+    stroke-dasharray: 40;
+    stroke-dashoffset: 40;
+    animation: draw-check 0.5s 0.3s forwards;
+  }
+  @keyframes pop {
+    0% { transform: scale(0); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+  @keyframes draw-check {
+    to { stroke-dashoffset: 0; }
+  }
+
+  .success-screen h2 {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .success-screen p {
+    font-size: 14px;
+    color: var(--text-muted);
+    line-height: 1.5;
+    max-width: 280px;
+    margin: 0 auto;
+  }
+
+  /* ── Footer ────────────────────────────────────────────────── */
+  .footer {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    margin-top: 20px;
+    font-size: 12px;
+    color: var(--text-muted);
+    opacity: 0.6;
+  }
+
+  /* ── Config notice (only when keys aren't set) ─────────────── */
+  .config-notice {
+    position: relative;
+    z-index: 1;
+    max-width: 420px;
+    width: 100%;
+    padding: 14px 18px;
+    background: rgba(234, 179, 8, 0.08);
+    border: 1px solid rgba(234, 179, 8, 0.2);
+    border-radius: 12px;
+    margin-bottom: 16px;
+    font-size: 13px;
+    color: #FDE68A;
+    text-align: center;
+    line-height: 1.5;
+    display: none;
+  }
+  .config-notice.show { display: block; }
+  .config-notice code {
+    background: rgba(255,255,255,0.08);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 12px;
+  }
+</style>
+</head>
+<body>
+
+<!-- Config notice — hidden when real keys are set -->
+<div class="config-notice" id="configNotice">
+  Demo mode — set your Supabase URL and anon key in the <code>&lt;script&gt;</code> section to enable real submissions.
+</div>
+
+<div class="card">
+  <!-- Form view -->
+  <div id="formView">
+    <div class="logo-wrap">
+      <img src="logo.png" alt="QuantumBharat">
+    </div>
+
+    <div class="heading">
+      <h1>Welcome to QuantumBharat</h1>
+      <p>Register to join the community</p>
+    </div>
+
+    <div class="banner error" id="banner"></div>
+
+    <form id="regForm" novalidate>
+      <div class="field">
+        <label>Full Name <span class="req">*</span></label>
+        <input type="text" id="fullName" placeholder="Your full name" autocomplete="name" required>
+        <div class="err-msg">Please enter your full name</div>
+      </div>
+
+      <div class="field">
+        <label>Email Address <span class="req">*</span></label>
+        <input type="email" id="email" placeholder="you@example.com" autocomplete="email" inputmode="email" required>
+        <div class="err-msg">Please enter a valid email address</div>
+      </div>
+
+      <div class="field">
+        <label>Phone Number <span class="req">*</span></label>
+        <input type="tel" id="phone" placeholder="+91 98765 43210" autocomplete="tel" inputmode="tel" required>
+        <div class="err-msg">Please enter a valid phone number</div>
+      </div>
+
+      <div class="field">
+        <label>College / School</label>
+        <input type="text" id="college" placeholder="Optional" autocomplete="organization">
+      </div>
+
+      <button type="submit" class="btn" id="submitBtn">
+        <span class="btn-text">Register</span>
+        <span class="spinner"></span>
+      </button>
+    </form>
+  </div>
+
+  <!-- Success view -->
+  <div class="success-screen" id="successView">
+    <div class="logo-wrap" style="margin-bottom:20px;">
+      <img src="logo.png" alt="QuantumBharat">
+    </div>
+    <div class="checkmark-circle">
+      <svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
+    </div>
+    <h2>You're registered!</h2>
+    <p>Welcome to QuantumBharat. We'll be in touch soon — great things are coming.</p>
+  </div>
+</div>
+
+<div class="footer">&copy; 2026 QuantumBharat. All rights reserved.</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════════════
+//  CONFIGURATION — Replace these with your Supabase project details
+// ═══════════════════════════════════════════════════════════════════
+const SUPABASE_URL  = 'https://madfzpvdejabpmdbbhxw.supabase.co';
+const SUPABASE_KEY  = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1hZGZ6cHZkZWphYnBtZGJiaHh3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTQ1NTI3NDYsImV4cCI6MjExMDEyODc0Nn0.dU67KY6Fya33MwaSJtlFExVuE0q8AvBcG5uNnenu0qE';
+const TABLE_NAME    = 'concert_registrations';
+const SOURCE_TAG    = 'concert_nov2026';
+// ═══════════════════════════════════════════════════════════════════
+
+const isConfigured = !SUPABASE_URL.startsWith('YOUR_') && !SUPABASE_KEY.startsWith('YOUR_');
+
+// Show config notice if keys aren't set
+if (!isConfigured) {
+  document.getElementById('configNotice').classList.add('show');
+}
+
+const form      = document.getElementById('regForm');
+const btn       = document.getElementById('submitBtn');
+const banner    = document.getElementById('banner');
+const formView  = document.getElementById('formView');
+const successV  = document.getElementById('successView');
+
+const fields = {
+  fullName: { el: document.getElementById('fullName'), validate: v => v.trim().length >= 2 },
+  email:    { el: document.getElementById('email'),    validate: v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) },
+  phone:    { el: document.getElementById('phone'),    validate: v => v.replace(/\D/g,'').length >= 7 },
+};
+
+// Live validation — clear error on input
+Object.values(fields).forEach(f => {
+  f.el.addEventListener('input', () => {
+    f.el.classList.remove('invalid');
+    banner.classList.remove('show');
+  });
+});
+
+function validateAll() {
+  let ok = true;
+  for (const [, f] of Object.entries(fields)) {
+    if (!f.validate(f.el.value)) {
+      f.el.classList.add('invalid');
+      ok = false;
+    } else {
+      f.el.classList.remove('invalid');
+    }
+  }
+  return ok;
+}
+
+function showBanner(msg) {
+  banner.textContent = msg;
+  banner.classList.add('show');
+}
+
+async function submitToSupabase(data) {
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/${TABLE_NAME}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type':  'application/json',
+      'apikey':        SUPABASE_KEY,
+      'Authorization': `Bearer ${SUPABASE_KEY}`,
+      'Prefer':        'return=minimal',
+    },
+    body: JSON.stringify(data),
+  });
+
+  if (res.status === 409 || res.status === 409) {
+    return { ok: false, duplicate: true };
+  }
+  if (!res.ok) {
+    const body = await res.text();
+    return { ok: false, duplicate: false, error: body };
+  }
+  return { ok: true };
+}
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  banner.classList.remove('show');
+
+  if (!validateAll()) return;
+
+  const data = {
+    full_name:  fields.fullName.el.value.trim(),
+    email:      fields.email.el.value.trim().toLowerCase(),
+    phone:      fields.phone.el.value.trim(),
+    college:    document.getElementById('college').value.trim() || null,
+    source:     SOURCE_TAG,
+  };
+
+  btn.classList.add('loading');
+  btn.disabled = true;
+
+  // Demo mode — simulate success without network call
+  if (!isConfigured) {
+    await new Promise(r => setTimeout(r, 1200));
+    btn.classList.remove('loading');
+    btn.disabled = false;
+    formView.style.display = 'none';
+    successV.classList.add('visible');
+    return;
+  }
+
+  try {
+    const result = await submitToSupabase(data);
+    btn.classList.remove('loading');
+    btn.disabled = false;
+
+    if (result.ok) {
+      formView.style.display = 'none';
+      successV.classList.add('visible');
+    } else if (result.duplicate) {
+      showBanner('This email is already registered. Welcome back!');
+    } else {
+      showBanner('Something went wrong. Please try again.');
+      console.error('Supabase error:', result.error);
+    }
+  } catch (err) {
+    btn.classList.remove('loading');
+    btn.disabled = false;
+    showBanner('Network error. Please check your connection and try again.');
+    console.error('Network error:', err);
+  }
+});
+</script>
+</body>
+</html>
